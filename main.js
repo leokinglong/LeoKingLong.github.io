@@ -754,7 +754,8 @@ async function main() {
         // location.href,
         params.get("url") || "output.splat",
         // "http://localhost:8080/splat/",
-        "http://172.28.22.152:8082/splat/",
+        //"http://172.28.22.152:8082/splat/",
+        "https://leokinglong.github.io/",
     );
     const req = await fetch(url, {
         mode: "cors", // no-cors, *cors, same-origin
