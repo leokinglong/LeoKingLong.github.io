@@ -21,6 +21,10 @@
 				font-family: sans-serif;
 				background: black;
     			text-shadow: 0 0 3px black;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 			}
 			a, body {
 				color: white;
@@ -51,21 +55,23 @@
 
 			.cube-faces {
 				transform-style: preserve-3d;
-				height: 80px;
-				width: 80px;
+				height: 160px;
+				width: 160px;
 				position: relative;
 				transform-origin: 0 0;
-				transform: translateX(0) translateY(0) translateZ(-40px);
+				transform: translateX(0) translateY(0) translateZ(-80px);
 			}
 
 			.cube-face {
 				position: absolute;
 				inset: 0;
-				background: #0017ff;
-				border: solid 1px #ffffff;
+				border: solid 1px #000000;
+				/* 假设你的图片名为background.jpg */
+				background: #c6e3e2 url('./images/logo.png') no-repeat center center;
+				background-size: contain;
 			}
 			.cube-face.top {
-				transform: translateZ(80px);
+				transform: translateZ(160px);
 			}
 			.cube-face.front {
 				transform-origin: 0 50%;
@@ -73,15 +79,15 @@
 			}
 			.cube-face.back {
 				transform-origin: 0 50%;
-				transform: rotateY(-90deg) translateZ(-80px);
+				transform: rotateY(-90deg) translateZ(-160px);
 			}
 			.cube-face.right {
 				transform-origin: 50% 0;
-				transform: rotateX(-90deg) translateY(-80px);
+				transform: rotateX(-90deg) translateY(-160px);
 			}
 			.cube-face.left {
 				transform-origin: 50% 0;
-				transform: rotateX(-90deg) translateY(-80px) translateZ(80px);
+				transform: rotateX(-90deg) translateY(-160px) translateZ(160px);
 			}
 
 			@keyframes rotation {
@@ -185,62 +191,64 @@
 			body.nohf #progress, body.nohf .cube-face {
 				background: #ff9d0d;
 			}
+			#directionKeys {
+				position: absolute;
+				bottom: 20px; /* 根据需要调整 */
+				left: 20px; /* 根据需要调整 */
+				-webkit-user-select: none; /* Safari */
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* IE/Edge */
+				user-select: none; /* 标准语法 */
+			}
+			.direction-btn {
+				cursor: pointer;
+				background-color: rgba(0, 0, 0, 0.5);
+				color: white;
+				padding: 10px;
+				margin: 5px;
+				font-size: 24px;
+				text-align: center;
+				border-radius: 5px;
+			}
+			.direction-btn:hover {
+				background-color: rgba(255, 255, 255, 0.5);
+			}
+			#up-btn, #down-btn {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			#up-btn {
+				top: -50%;
+				transform: translate(-50%, -50%);
+			}
+			#down-btn {
+				bottom: -50%;
+			}
+			#left-btn, #right-btn {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			button {
+				-webkit-user-select: none; /* Safari */
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* IE/Edge */
+				user-select: none; /* 标准语法 */
+			}
+
 		</style>
 	</head>
 	<body>
-		<script>
-			if(location.host.includes('hf.space')) document.body.classList.add('nohf');
-		</script>
 		<div id="info">
 			<h3 class="nohf">周边好生活实景复刻</h3>
-
 			<details>
-			<summary>操作说明</summary>
-
-<div id="instructions">movement (arrow keys)
-- left/right arrow keys to strafe side to side
-- up/down arrow keys to move forward/back
-- space to jump
-
-camera angle (wasd)
-- a/d to turn camera left/right
-- w/s to tilt camera up/down
-- q/e to roll camera counterclockwise/clockwise
-- i/k and j/l to orbit
-
-trackpad
-- scroll up/down/left/right to orbit
-- pinch to move forward/back
-- ctrl key + scroll to move forward/back
-- shift + scroll to move up/down or strafe
-
-mouse
-- click and drag to orbit
-- right click (or ctrl/cmd key) and drag up/down to move
-
-touch (mobile)
-- one finger to orbit
-- two finger pinch to move forward/back
-- two finger rotate to rotate camera clockwise/counterclockwise
-- two finger pan to move side-to-side and up-down
-
-gamepad
-- if you have a game controller connected it should work
-
-other
-- press 0-9 to switch to one of the pre-loaded camera views
-- press '-' or '+'key to cycle loaded cameras
-- press p to resume default animation
-- drag and drop .ply file to convert to .splat
-- drag and drop cameras.json to load cameras
-</div>
-
-		</details>
-
+		    	<summary>操作说明</summary>
+				<div id="instructions">-手指控制摇杆进行移动
+-单指滑动进行旋转
+				</div>
+		    </details>
 		</div>
-
 		<div id="progress"></div>
-
 		<div id="message"></div>
 		<div class="scene" id="spinner">
 			<div class="cube-wrapper">
@@ -257,13 +265,51 @@ other
 			</div>
 		</div>
 		<canvas id="canvas"></canvas>
-
 		<div id="quality">
 			<span id="fps"></span>
 		</div>
 		<div id="caminfo">
 			<span id="camid"></span>
 		</div>
-		<script src="main.js"></script>
+<!--		<div id="directionKeys">-->
+<!--			<button id="up-btn" class="direction-btn arrow-button">↑</button>-->
+<!--			<button id="left-btn" class="direction-btn arrow-button">←</button>-->
+<!--			<button id="right-btn" class="direction-btn arrow-button">→</button>-->
+<!--			<button id="down-btn" class="direction-btn arrow-button">↓</button>-->
+<!--		</div>-->
+		<div id="joy3Div" style="width:15vw;height:20vh;position:fixed;bottom:8vh;left:12vw;"></div>
+<!--		<div style="position:fixed;bottom:125px;left:750px;">-->
+<!--			Posizione X:<input id="joy3PosizioneX" type="text" /><br />-->
+<!--			Posizione Y:<input id="joy3PosizioneY" type="text" /><br />-->
+<!--			Direzione:<input id="joy3Direzione" type="text" /><br />-->
+<!--			X :<input id="joy3X" type="text" /></br>-->
+<!--			Y :<input id="joy3Y" type="text" />-->
+<!--		</div>-->
+		<script src="scripts/joy.js"></script>
+		<script>
+			// controller init
+			const joy3Param = {"title": "joystick3","internalStrokeColor":"#fff","internalFillColor":"#626262","externalStrokeColor":"#626262"};
+			const Joy3 = new JoyStick('joy3Div', joy3Param);
+
+			// const joy3IinputPosX = document.getElementById("joy3PosizioneX");
+			// const joy3InputPosY = document.getElementById("joy3PosizioneY");
+			// const joy3Direzione = document.getElementById("joy3Direzione");
+			// const joy3X = document.getElementById("joy3X");
+			// const joy3Y = document.getElementById("joy3Y");
+			//
+			// setInterval(function(){ joy3IinputPosX.value=Joy3.GetPosX(); }, 50);
+			// setInterval(function(){ joy3InputPosY.value=Joy3.GetPosY(); }, 50);
+			// setInterval(function(){ joy3Direzione.value=Joy3.GetDir(); }, 50);
+			// setInterval(function(){ joy3X.value=Joy3.GetX(); }, 50);
+			// setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
+		</script>
+		<script src="scripts/main.min.js?t=123211"></script>
+		<!-- <script src="scripts/vconsole.min.js"></script> -->
+<!--		<script>-->
+<!--			// VConsole will be exported to `window.VConsole` by default.-->
+<!--			const vConsole = new window.VConsole();-->
+<!--		</script>-->
+<!--		<script src="scripts/encrypt.js"></script>-->
+
 	</body>
 </html>
